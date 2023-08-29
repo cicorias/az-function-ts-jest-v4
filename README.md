@@ -1,6 +1,9 @@
 # Overview
 Demonstrates using Jest with Azure Functions v4 Runtime with Typescript
 
+## Background
+Ensure you reviewin the v4 Azure Functions [here](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-node?tabs=typescript%2Clinux%2Cazure-cli&pivots=nodejs-model-v4)
+
 ## Getting Started
 Ensure you review the `./tsconfig.json` along with the `./jest.config.ts` for settings.
 
