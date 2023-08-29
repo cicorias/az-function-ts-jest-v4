@@ -1,0 +1,17 @@
+POST http://localhost:7071/api/HandleDocument
+Content-Type: multipart/form-data; boundary=----ThisJustNeedsToMatch
+
+------ThisJustNeedsToMatch
+Content-Disposition: form-data; name="product"
+
+ABC Brand
+------ThisJustNeedsToMatch
+Content-Disposition: form-data; name="data"
+
+2023-08-28
+------ThisJustNeedsToMatch
+Content-Disposition: form-data; name="fileUpload"; filename="README.md"
+
+< ../README.md
+------ThisJustNeedsToMatch--
+

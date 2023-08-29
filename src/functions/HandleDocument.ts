@@ -1,15 +1,46 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, InvocationContext, output } from "@azure/functions";
+
+const blobOutput = output.storageBlob({
+    connection: 'storage_APPSETTING',
+    path: 'helloworld/tbd-copy.png',
+});
+
+const blobOutputJson = output.storageBlob({
+    connection: 'storage_APPSETTING',
+    path: 'helloworld/tbd-copy.json',
+});
+
 
 export async function HandleDocument(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     context.log(`Http function processed request for url "${request.url}"`);
 
-    const name = request.query.get('name') || await request.text() || 'world';
+    const formdata = await request.formData();
+    const formItems : Record<string, string> = {};
 
-    return { body: `Hello, ${name}!`, status: 200 };
-};
+    for (const [key, value] of formdata.entries()) {
+        if (typeof value === "object") { //} && value.hasOwnProperty("name") && value.hasOwnProperty("type")) {
+            context.log(key, value.name, value.type);
+            const buffer = await value.arrayBuffer();
+            context.extraOutputs.set(blobOutput, buffer);
+            
+        } else if (typeof value === "string") {
+            context.log(key, value);
+            formItems[key] = value;
+        }
+        else {
+            context.warn("unknown type", key, value);
+        }
+    }
+
+    context.extraOutputs.set(blobOutputJson, JSON.stringify(formItems));
+
+    return { body: `Hello!`, status: 200 };
+}
+
 
 app.http('HandleDocument', {
     methods: ['GET', 'POST'],
     authLevel: 'anonymous',
-    handler: HandleDocument
+    handler: HandleDocument,
+    extraOutputs: [blobOutput, blobOutputJson]
 });
