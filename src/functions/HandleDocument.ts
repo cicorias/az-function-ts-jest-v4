@@ -5,7 +5,7 @@ export async function HandleDocument(request: HttpRequest, context: InvocationCo
 
     const name = request.query.get('name') || await request.text() || 'world';
 
-    return { body: `Hello, ${name}!` };
+    return { body: `Hello, ${name}!`, status: 200 };
 };
 
 app.http('HandleDocument', {

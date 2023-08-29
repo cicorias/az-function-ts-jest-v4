@@ -9,13 +9,16 @@
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
     "start": "func start",
-    "test": "jest"
+    "test": "jest --silent",
+    "cleantest" : "npm run clean && npm run test"
   },
   "dependencies": {
-    "@azure/functions": "^4.0.0-alpha.9"
+    "@azure/functions": "^4.0.0-alpha.11",
+    "http-status-codes": "^2.2.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.6.4",
+    "@types/jest": "^29.5.4",
     "@types/node": "18.x",
     "azure-functions-core-tools": "^4.x",
     "jest": "^29.6.4",
