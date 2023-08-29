@@ -7,6 +7,9 @@ Ensure you reviewin the v4 Azure Functions [here](https://learn.microsoft.com/en
 ## Getting Started
 Ensure you review the `./tsconfig.json` along with the `./jest.config.ts` for settings.
 
+## Create or update the `local.settings.json` file
+There is an example that is present in the root. This is set to use the Development Azurite services for Blob and Queue.
+
 ## Running
 
 from a bash prompt
