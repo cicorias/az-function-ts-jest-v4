@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "ms-azuretools.vscode-azurefunctions",
-    "kavod-io.vscode-jest-test-adapter"
+    "kavod-io.vscode-jest-test-adapter",
+    "azurite.azurite"
 ]
 }
