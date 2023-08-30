@@ -1,9 +1,22 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext, output } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, InvocationContext, output, StorageBlobOutput } from "@azure/functions";
 
-const blobOutput = output.storageBlob({
+let blobOutputold = output.storageBlob({
     connection: 'storage_APPSETTING',
-    path: 'helloworld/tbd-copy.png',
+    path: `helloworld/tbdbb-copy.png`,
 });
+
+const blobOutput= (fn:string) => {
+    let rv = blobOutputold;
+    if (fn.length > 0)
+        rv.path = `helloworld/tbdhhh-copy-${fn}.png`;
+    else 
+        rv.path = `helloworld/tbggg-copy.png`;
+    return rv;
+    // return output.storageBlob({
+    //     connection: 'storage_APPSETTING',
+    //     path: `helloworld/tbd2-copy.png`,
+    // });
+};
 
 const blobOutputJson = output.storageBlob({
     connection: 'storage_APPSETTING',
@@ -26,7 +39,7 @@ export async function HandleDocument(request: HttpRequest, context: InvocationCo
         if (typeof value === "object") {
             context.log(key, value.name, value.type);
             const buffer = await value.arrayBuffer();
-            context.extraOutputs.set(blobOutput, buffer);
+            context.extraOutputs.set(blobOutput("fizz"), buffer);
             
         } else if (typeof value === "string") {
             context.log(key, value);
@@ -48,5 +61,5 @@ app.http('HandleDocument', {
     methods: ['GET', 'POST'],
     authLevel: 'anonymous',
     handler: HandleDocument,
-    extraOutputs: [blobOutput, blobOutputJson, queueOutput]
+    extraOutputs: [blobOutput("qqq"), blobOutputJson, queueOutput]
 });
