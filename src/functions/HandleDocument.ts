@@ -2,12 +2,12 @@ import { app, HttpRequest, HttpResponseInit, InvocationContext, output } from "@
 
 const blobOutput = output.storageBlob({
     connection: 'storage_APPSETTING',
-    path: 'helloworld/tbd-copy.png',
+    path: `helloworld/{rand-guid}/tbd-copy.json`,
 });
 
 const blobOutputJson = output.storageBlob({
     connection: 'storage_APPSETTING',
-    path: 'helloworld/tbd-copy.json',
+    path: 'helloworld/{rand-guid}/tbd-copy.png',
 });
 
 const queueOutput = output.storageQueue({
@@ -24,8 +24,12 @@ export async function HandleDocument(request: HttpRequest, context: InvocationCo
 
     for (const [key, value] of formdata.entries()) {
         if (typeof value === "object") {
+            // TODO: better "is this a file object" check
+            // TODO: grab the filename for the binding output
             context.log(key, value.name, value.type);
             const buffer = await value.arrayBuffer();
+            // blobOutput.set(value.name, buffer);
+            // blobOutput.path = `helloworld/fizzbuzz/${value.name}`;
             context.extraOutputs.set(blobOutput, buffer);
             
         } else if (typeof value === "string") {
@@ -45,8 +49,8 @@ export async function HandleDocument(request: HttpRequest, context: InvocationCo
 
 
 app.http('HandleDocument', {
-    methods: ['GET', 'POST'],
+    methods: ['POST'],
     authLevel: 'anonymous',
     handler: HandleDocument,
-    extraOutputs: [blobOutput, blobOutputJson, queueOutput]
+    extraOutputs: [blobOutput, blobOutputJson, queueOutput],
 });
